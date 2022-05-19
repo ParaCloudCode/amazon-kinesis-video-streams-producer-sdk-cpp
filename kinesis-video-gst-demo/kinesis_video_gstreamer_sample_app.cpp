@@ -30,7 +30,7 @@ LOGGER_TAG("com.amazonaws.kinesis.video.gstreamer");
 #define DEFAULT_STREAMING_TYPE STREAMING_TYPE_REALTIME
 #define DEFAULT_CONTENT_TYPE "video/h264"
 #define DEFAULT_MAX_LATENCY_SECONDS 60
-#define DEFAULT_FRAGMENT_DURATION_MILLISECONDS 2000
+#define DEFAULT_FRAGMENT_DURATION_MILLISECONDS 1000
 #define DEFAULT_TIMECODE_SCALE_MILLISECONDS 1
 #define DEFAULT_KEY_FRAME_FRAGMENTATION TRUE
 #define DEFAULT_FRAME_TIMECODES TRUE
@@ -802,12 +802,12 @@ int gstreamer_live_source_init(int argc, char* argv[], CustomData *data, GstElem
     if (!data->h264_stream_supported){
         if (vtenc) {
             g_object_set(G_OBJECT (encoder), "allow-frame-reordering", FALSE, "realtime", TRUE, "max-keyframe-interval",
-                         45, "bitrate", bitrateInKBPS, NULL);
+                         25, "bitrate", bitrateInKBPS, NULL);
         } else if (isOnRpi) {
             g_object_set(G_OBJECT (encoder), "control-rate", 2, "target-bitrate", bitrateInKBPS*1000,
-                         "periodicty-idr", 45, "inline-header", FALSE, NULL);
+                         "periodicty-idr", 25, "inline-header", FALSE, NULL);
         } else {
-            g_object_set(G_OBJECT (encoder), "bframes", 0, "key-int-max", 45, "bitrate", bitrateInKBPS, NULL);
+            g_object_set(G_OBJECT (encoder), "bframes", 0, "key-int-max", 25, "bitrate", bitrateInKBPS, NULL);
         }
     }
 
